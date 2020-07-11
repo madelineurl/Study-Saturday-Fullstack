@@ -39274,6 +39274,8 @@ var _SingleStudent2 = _interopRequireDefault(_SingleStudent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -39294,7 +39296,7 @@ var Main = function (_Component) {
       students: [],
       selectedStudent: {}
     };
-
+    _this.addStudent = _this.addStudent.bind(_this);
     _this.selectStudent = _this.selectStudent.bind(_this);
     return _this;
   }
@@ -39355,6 +39357,45 @@ var Main = function (_Component) {
       });
     }
   }, {
+    key: 'addStudent',
+    value: function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(evt) {
+        var _ref4, data;
+
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                event.preventDefault();
+                console.log(evt.target.content.value);
+                _context2.next = 4;
+                return _axios2.default.post('/student');
+
+              case 4:
+                _ref4 = _context2.sent;
+                data = _ref4.data;
+
+                console.log(data);
+
+                this.setState({
+                  students: [].concat(_toConsumableArray(this.state.students), [data])
+                });
+
+              case 8:
+              case 'end':
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function addStudent(_x) {
+        return _ref3.apply(this, arguments);
+      }
+
+      return addStudent;
+    }()
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -39391,7 +39432,7 @@ var Main = function (_Component) {
             selectStudent: this.selectStudent
           })
         ),
-        _react2.default.createElement(_AddStudent2.default, null),
+        _react2.default.createElement(_AddStudent2.default, { addStudent: this.addStudent }),
         this.state.selectedStudent.id ? _react2.default.createElement(_SingleStudent2.default, { student: this.state.selectedStudent }) : null
       );
     }
@@ -40454,7 +40495,7 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -40465,18 +40506,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var AddStudent = function (_React$Component) {
   _inherits(AddStudent, _React$Component);
 
-  function AddStudent() {
+  function AddStudent(props) {
     _classCallCheck(this, AddStudent);
 
-    var _this = _possibleConstructorReturn(this, (AddStudent.__proto__ || Object.getPrototypeOf(AddStudent)).call(this));
+    var _this = _possibleConstructorReturn(this, (AddStudent.__proto__ || Object.getPrototypeOf(AddStudent)).call(this, props));
 
     _this.state = {
-      newStudent: ''
-      // fullName: '',
-      // id: 0,
-      // firstName: '',
-      // lastName: '',
-      // email: ''
+      firstName: '',
+      lastName: '',
+      email: ''
     };
     _this.handleChange = _this.handleChange.bind(_this);
     _this.handleSubmit = _this.handleSubmit.bind(_this);
@@ -40486,59 +40524,45 @@ var AddStudent = function (_React$Component) {
   _createClass(AddStudent, [{
     key: 'handleChange',
     value: function handleChange(evt) {
-      console.log(this.state);
-      this.setState({
-        newStudent: evt.target.value
-      });
+      //console.log('state: ', this.state);
+      this.setState(_defineProperty({}, evt.target.name, evt.target.value));
     }
   }, {
     key: 'handleSubmit',
-    value: function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(evt) {
-        var newStudent;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                event.preventDefault();
-                console.log(evt.target.content.value);
-                _context.next = 4;
-                return _axios2.default.post('/student');
+    value: function handleSubmit(evt) {
+      evt.preventDefault();
+      //console.log(evt.target.content.value);
 
-              case 4:
-                newStudent = _context.sent;
+      this.props.addStudent(this.state);
 
-                console.log(newStudent);
-
-                this.setState({
-                  newStudent: ''
-                });
-
-              case 7:
-              case 'end':
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function handleSubmit(_x) {
-        return _ref.apply(this, arguments);
-      }
-
-      return handleSubmit;
-    }()
+      this.setState({
+        firstName: '',
+        lastName: '',
+        email: ''
+      });
+    }
   }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        'form',
-        { id: 'new-student-form', onSubmit: this.handleSubmit },
-        _react2.default.createElement('input', { type: 'text', name: 'content', value: this.state.newStudent, onChange: this.handleChange }),
+        'div',
+        { className: 'new-student-form' },
         _react2.default.createElement(
-          'button',
-          { type: 'submit' },
-          'Add new student'
+          'h3',
+          null,
+          'New Student Form'
+        ),
+        _react2.default.createElement(
+          'form',
+          { id: 'new-student-form', onSubmit: this.handleSubmit },
+          _react2.default.createElement('input', { type: 'text', name: 'firstName', placeholder: 'First name', value: this.state.firstName, onChange: this.handleChange }),
+          _react2.default.createElement('input', { type: 'text', name: 'lastName', placeholder: 'Last name', value: this.state.lastName, onChange: this.handleChange }),
+          _react2.default.createElement('input', { type: 'text', name: 'email', placeholder: 'email', value: this.state.email, onChange: this.handleChange }),
+          _react2.default.createElement(
+            'button',
+            { type: 'submit' },
+            'Add new student'
+          )
         )
       );
     }

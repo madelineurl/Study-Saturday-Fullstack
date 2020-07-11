@@ -12,9 +12,13 @@ router.get('/:studentId', function(req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-  Student.create(req.body.content)
+  Student.create({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email
+  })
     .then(newStudent => {
-      console.log(newStudent);
+      // console.log(newStudent);
       res.json(newStudent);
     })
     .catch(next);

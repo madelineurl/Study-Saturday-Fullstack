@@ -2,44 +2,48 @@ import React from 'react'
 import axios from 'axios'
 
 class AddStudent extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      newStudent: ''
-      // fullName: '',
-      // id: 0,
-      // firstName: '',
-      // lastName: '',
-      // email: ''
+      firstName: '',
+      lastName: '',
+      email: ''
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(evt) {
-    console.log(this.state);
+    //console.log('state: ', this.state);
     this.setState({
-      newStudent: evt.target.value
+        [evt.target.name]: evt.target.value,
     });
   }
 
-  async handleSubmit(evt) {
-    event.preventDefault();
-    console.log(evt.target.content.value);
-    const newStudent = await axios.post('/student');
-    console.log(newStudent);
+  handleSubmit(evt) {
+    evt.preventDefault();
+    //console.log(evt.target.content.value);
+
+    this.props.addStudent(this.state);
 
     this.setState({
-      newStudent: ''
-    })
+      firstName: '',
+      lastName: '',
+      email: ''
+    });
   }
 
   render() {
     return (
-      <form id='new-student-form' onSubmit={this.handleSubmit}>
-        <input type='text' name='content' value={this.state.newStudent} onChange={this.handleChange}/>
-        <button type='submit'>Add new student</button>
-      </form>
+      <div className='new-student-form'>
+        <h3>New Student Form</h3>
+        <form id='new-student-form' onSubmit={this.handleSubmit}>
+          <input type='text' name='firstName' placeholder='First name' value={this.state.firstName} onChange={this.handleChange}/>
+          <input type='text' name='lastName' placeholder='Last name' value={this.state.lastName} onChange={this.handleChange}/>
+          <input type='text' name='email' placeholder='email' value={this.state.email} onChange={this.handleChange}/>
+          <button type='submit'>Add new student</button>
+        </form>
+      </div>
     )
   }
 }

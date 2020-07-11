@@ -12,7 +12,7 @@ export default class Main extends Component {
       students: [],
       selectedStudent: {},
     };
-
+    this.addStudent = this.addStudent.bind(this);
     this.selectStudent = this.selectStudent.bind(this);
   }
 
@@ -36,6 +36,17 @@ export default class Main extends Component {
     });
   }
 
+  async addStudent(evt) {
+    event.preventDefault();
+    console.log(evt.target.content.value);
+    const {data} = await axios.post('/student');
+    console.log(data);
+
+    this.setState({
+      students: [...this.state.students, data]
+    })
+  }
+
   render() {
     return (
       <div>
@@ -52,7 +63,7 @@ export default class Main extends Component {
             selectStudent={this.selectStudent}
           />
         </table>
-        <AddStudent />
+        <AddStudent addStudent={this.addStudent}/>
         {this.state.selectedStudent.id ? (
           <SingleStudent student={this.state.selectedStudent} />
         ) : null}

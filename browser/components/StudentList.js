@@ -23,4 +23,4 @@ const StudentList = (props) => {
     )
 }
 
-export default StudentList
+export default StudentList;
