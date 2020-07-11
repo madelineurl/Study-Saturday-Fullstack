@@ -3,13 +3,22 @@ const Student = require('../db/models/students');
 const Test = require('../db/models/tests');
 
 router.get('/:studentId', function(req, res, next) {
-  Student.findById(req.params.studentId)
+  Student.findByPk(req.params.studentId)
     .then(student => {
       if (!student) return res.sendStatus(404);
       res.json(student);
     })
     .catch(next);
 });
+
+router.post('/', function (req, res, next) {
+  Student.create(req.body.content)
+    .then(newStudent => {
+      console.log(newStudent);
+      res.json(newStudent);
+    })
+    .catch(next);
+})
 
 router.get('/', function(req, res, next) {
   Student.findAll({ include: { all: true } }).then(students =>

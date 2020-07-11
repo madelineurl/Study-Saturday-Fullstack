@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import AddStudent from './AddStudent'
 
 import StudentList from './StudentList.js';
 import SingleStudent from './SingleStudent.js';
@@ -51,6 +52,7 @@ export default class Main extends Component {
             selectStudent={this.selectStudent}
           />
         </table>
+        <AddStudent />
         {this.state.selectedStudent.id ? (
           <SingleStudent student={this.state.selectedStudent} />
         ) : null}
