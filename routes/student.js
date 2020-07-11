@@ -18,7 +18,6 @@ router.post('/', function (req, res, next) {
     email: req.body.email
   })
     .then(newStudent => {
-      // console.log(newStudent);
       res.json(newStudent);
     })
     .catch(next);

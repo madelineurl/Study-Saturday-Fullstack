@@ -36,15 +36,12 @@ export default class Main extends Component {
     });
   }
 
-  async addStudent(evt) {
-    event.preventDefault();
-    console.log(evt.target.content.value);
-    const {data} = await axios.post('/student');
-    console.log(data);
+  async addStudent(newStudent) {
+    const {data} = await axios.post('/student', newStudent);
 
     this.setState({
       students: [...this.state.students, data]
-    })
+    });
   }
 
   render() {

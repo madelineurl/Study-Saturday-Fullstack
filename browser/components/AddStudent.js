@@ -14,7 +14,6 @@ class AddStudent extends React.Component {
   }
 
   handleChange(evt) {
-    //console.log('state: ', this.state);
     this.setState({
         [evt.target.name]: evt.target.value,
     });
@@ -22,7 +21,6 @@ class AddStudent extends React.Component {
 
   handleSubmit(evt) {
     evt.preventDefault();
-    //console.log(evt.target.content.value);
 
     this.props.addStudent(this.state);
 

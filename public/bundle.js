@@ -39359,29 +39359,26 @@ var Main = function (_Component) {
   }, {
     key: 'addStudent',
     value: function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(evt) {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(newStudent) {
         var _ref4, data;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                event.preventDefault();
-                console.log(evt.target.content.value);
-                _context2.next = 4;
-                return _axios2.default.post('/student');
+                _context2.next = 2;
+                return _axios2.default.post('/student', newStudent);
 
-              case 4:
+              case 2:
                 _ref4 = _context2.sent;
                 data = _ref4.data;
 
-                console.log(data);
 
                 this.setState({
                   students: [].concat(_toConsumableArray(this.state.students), [data])
                 });
 
-              case 8:
+              case 5:
               case 'end':
                 return _context2.stop();
             }
@@ -40524,14 +40521,12 @@ var AddStudent = function (_React$Component) {
   _createClass(AddStudent, [{
     key: 'handleChange',
     value: function handleChange(evt) {
-      //console.log('state: ', this.state);
       this.setState(_defineProperty({}, evt.target.name, evt.target.value));
     }
   }, {
     key: 'handleSubmit',
     value: function handleSubmit(evt) {
       evt.preventDefault();
-      //console.log(evt.target.content.value);
 
       this.props.addStudent(this.state);
 
